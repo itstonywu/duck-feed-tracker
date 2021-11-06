@@ -11,13 +11,15 @@ datasource db {
 }
 
 model Location {
-  id       String    @id @default(cuid())
-  name     String    @unique
-  feedings Feeding[]
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  name      String    @unique
+  feedings  Feeding[]
 }
 
 model Feeding {
   id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
   amount        Int
   numberOfDucks Int
   type          String
