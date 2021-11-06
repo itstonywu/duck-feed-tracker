@@ -9,3 +9,18 @@ datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
+
+model Location {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  feedings Feeding[]
+}
+
+model Feeding {
+  id            String   @id @default(cuid())
+  amount        Int
+  numberOfDucks Int
+  type          String
+  location      Location @relation(fields: [locationId], references: [id])
+  locationId    String
+}
