@@ -1,8 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { Location } from "@prisma/client"
-import prisma from "@/lib/prisma"
-
-type ResponseError = { error: string }
+import {
+  Location,
+  ResponseError,
+  createLocation,
+  getAllLocations,
+} from "@/lib/db"
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,7 +24,7 @@ export default async function handler(
 // GET /api/locations
 const handleGET = async (res: NextApiResponse<Location[] | ResponseError>) => {
   try {
-    const locations = await prisma.location.findMany()
+    const locations = await getAllLocations()
     res.status(200).json(locations)
   } catch (error) {
     res.status(500).json({ error: "Error fetching locations" })
@@ -35,11 +37,7 @@ const handlePOST = async (
   res: NextApiResponse<Location | ResponseError>
 ) => {
   try {
-    const location = await prisma.location.create({
-      data: {
-        name,
-      },
-    })
+    const location = await createLocation(name)
     res.status(200).json(location)
   } catch (error) {
     res.status(500).json({ error: "Error creating location" })

@@ -1,10 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { Location, Entry } from "@prisma/client"
-import prisma from "@/lib/prisma"
-
-type ResponseError = { error: string }
-type Data = (Location & { entries: Entry[] }) | null
-type ResponseType = Data | ResponseError
+import { LocationWithEntries, findLocation, ResponseError } from "@/lib/db"
 
 export default async function handler(
   req: NextApiRequest,
@@ -19,15 +14,13 @@ export default async function handler(
   }
 }
 
-// GET /api/locations
-const handleGET = async (id: string, res: NextApiResponse<ResponseType>) => {
+// GET /api/locations/:id
+const handleGET = async (
+  id: string,
+  res: NextApiResponse<LocationWithEntries | ResponseError>
+) => {
   try {
-    const location = await prisma.location.findUnique({
-      where: { id },
-      include: {
-        entries: true,
-      },
-    })
+    const location = await findLocation(id)
     res.status(200).json(location)
   } catch (error) {
     res.status(500).json({ error: "Error fetching location data" })

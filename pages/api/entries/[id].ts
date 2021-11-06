@@ -1,16 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { Entry } from "@prisma/client"
-import prisma from "@/lib/prisma"
-
-type ResponseError = { error: string }
+import { Entry, deleteEntry, ResponseError } from "@/lib/db"
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Entry[] | ResponseError>
+  res: NextApiResponse
 ) {
-  const id = <string>req.query.id
-
   if (req.method === "DELETE") {
+    const id = <string>req.query.id
     handleDELETE(<string>id, res)
   } else {
     res.status(405)
@@ -19,11 +15,12 @@ export default async function handler(
 }
 
 // DELETE /api/entries/:id
-const handleDELETE = async (id: string, res: NextApiResponse) => {
+const handleDELETE = async (
+  id: string,
+  res: NextApiResponse<Entry | ResponseError>
+) => {
   try {
-    const entry = await prisma.entry.delete({
-      where: { id },
-    })
+    const entry = await deleteEntry(id)
     res.status(200).json(entry)
   } catch (error) {
     res.status(500).json({ error: "Error deleting entry" })
