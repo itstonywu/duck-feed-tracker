@@ -11,13 +11,13 @@ datasource db {
 }
 
 model Location {
-  id        String    @id @default(cuid())
-  createdAt DateTime  @default(now())
-  name      String    @unique
-  feedings  Feeding[]
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  name      String   @unique
+  entries   Entry[]
 }
 
-model Feeding {
+model Entry {
   id            String   @id @default(cuid())
   createdAt     DateTime @default(now())
   amount        Int
