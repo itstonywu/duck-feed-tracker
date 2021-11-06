@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { Location } from "@prisma/client"
-import prisma from "../../../lib/prisma"
+import prisma from "@/lib/prisma"
 
 type ResponseError = { error: string }
 
@@ -14,12 +14,13 @@ export default async function handler(
     const { name } = req.body
     handlePOST(name, res)
   } else {
-    throw new Error("HTTP method not supported")
+    res.status(405)
+    res.end()
   }
 }
 
 // GET /api/locations
-async function handleGET(res: NextApiResponse<Location[] | ResponseError>) {
+const handleGET = async (res: NextApiResponse<Location[] | ResponseError>) => {
   try {
     const locations = await prisma.location.findMany()
     res.status(200).json(locations)
@@ -29,10 +30,10 @@ async function handleGET(res: NextApiResponse<Location[] | ResponseError>) {
 }
 
 // POST /api/locations
-async function handlePOST(
+const handlePOST = async (
   name: string,
   res: NextApiResponse<Location | ResponseError>
-) {
+) => {
   try {
     const location = await prisma.location.create({
       data: {
