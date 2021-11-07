@@ -7,26 +7,38 @@ export type LocationWithEntries = (Location & { entries: Entry[] }) | null
 export type ResponseError = { error: string }
 
 export const getAllLocations = async (): Promise<Location[]> => {
-  return await prisma.location.findMany()
+  return await prisma.location.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  })
 }
 
 export const createLocation = async (name: string): Promise<Location> => {
   return await prisma.location.create({ data: { name } })
 }
 
-export const findLocation = async (
+export const getLocationAndEntries = async (
   id: string
 ): Promise<LocationWithEntries> => {
   return await prisma.location.findUnique({
     where: { id },
     include: {
-      entries: true,
+      entries: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   })
 }
 
 export const getAllEntries = async (): Promise<Entry[]> => {
-  return await prisma.entry.findMany()
+  return await prisma.entry.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  })
 }
 
 export const createEntry = async ({
