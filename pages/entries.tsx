@@ -3,11 +3,10 @@ import Head from "next/head"
 import styles from "../styles/Home.module.css"
 import useSWR from "swr"
 import fetcher from "@/utils/fetcher"
-import { Location } from "@prisma/client"
-import NextLink from "next/link"
+import { Entry } from "@prisma/client"
 
-const Home: NextPage = () => {
-  const { data } = useSWR<Location[]>("/api/locations", fetcher)
+const Entries: NextPage = () => {
+  const { data } = useSWR<Entry[]>("/api/entries", fetcher)
 
   return (
     <div className={styles.container}>
@@ -18,16 +17,10 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        {data?.map((location) => (
-          <div key={location.id}>
-            <NextLink href={`/locations/${location.id}`}>
-              {location.name}
-            </NextLink>
-          </div>
-        ))}
+        <pre>{JSON.stringify(data, null, 2)}</pre>
       </main>
     </div>
   )
 }
 
-export default Home
+export default Entries
