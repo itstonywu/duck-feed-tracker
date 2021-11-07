@@ -1,5 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next"
-import { LocationWithEntries, findLocation, ResponseError } from "@/lib/db"
+import {
+  LocationWithEntries,
+  getLocationAndEntries,
+  ResponseError,
+} from "@/lib/db"
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,7 +24,7 @@ const handleGET = async (
   res: NextApiResponse<LocationWithEntries | ResponseError>
 ) => {
   try {
-    const location = await findLocation(id)
+    const location = await getLocationAndEntries(id)
     res.status(200).json(location)
   } catch (error) {
     res.status(500).json({ error: "Error fetching location data" })
