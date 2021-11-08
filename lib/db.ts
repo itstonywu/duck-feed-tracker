@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma"
 export type { Entry }
 export type { Location }
 export type LocationWithEntries = (Location & { entries: Entry[] }) | null
+export type EntryWithLocation = Entry & { location: Location }
 export type ResponseError = { error: string }
 
 export const getAllLocations = async (): Promise<Location[]> => {
@@ -33,8 +34,11 @@ export const getLocationAndEntries = async (
   })
 }
 
-export const getAllEntries = async (): Promise<Entry[]> => {
+export const getAllEntries = async (): Promise<EntryWithLocation[]> => {
   return await prisma.entry.findMany({
+    include: {
+      location: true,
+    },
     orderBy: {
       createdAt: "desc",
     },
