@@ -13,7 +13,7 @@ export default async function handler(
   if (req.method === "GET") {
     handleGET(res)
   } else if (req.method === "POST") {
-    const { name } = req.body
+    const { name } = JSON.parse(req.body)
     handlePOST(name, res)
   } else {
     res.status(405)
