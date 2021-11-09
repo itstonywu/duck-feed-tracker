@@ -1,19 +1,18 @@
-import React from "react"
-import { Flex, Link } from "@chakra-ui/layout"
+import { Flex, Link, Box } from "@chakra-ui/layout"
 import NextLink from "next/link"
 
-const Nav = () => {
+const Nav: React.FunctionComponent = () => {
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="space-between"
-      pt={4}
-      pb={4}
-      maxW="1250px"
-      w="full"
-      px={8}
-    >
-      <Flex>
+    <Box bg="white" w="full" mb={8}>
+      <Flex
+        alignItems="center"
+        justifyContent="left"
+        pt={4}
+        pb={4}
+        maxW="1250px"
+        margin="0 auto"
+        px={8}
+      >
         <NextLink href="/" passHref>
           <Link mr={4}>Locations</Link>
         </NextLink>
@@ -21,7 +20,7 @@ const Nav = () => {
           <Link>Entries</Link>
         </NextLink>
       </Flex>
-    </Flex>
+    </Box>
   )
 }
 
