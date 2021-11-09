@@ -5,6 +5,7 @@ import { Location } from "@prisma/client"
 import DashboardShell from "@/components/DashboardShell"
 import LocationTableSkeleton from "@/components/LocationTableSkeleton"
 import LocationsTable from "@/components/LocationsTable"
+import LocationsTableHeading from "@/components/LocationsTableHeading"
 
 const Home: NextPage = () => {
   const { data } = useSWR<Array<Location & { createdAt: string }>>(
@@ -22,6 +23,7 @@ const Home: NextPage = () => {
 
   return (
     <DashboardShell>
+      <LocationsTableHeading />
       <LocationsTable locations={data} />
     </DashboardShell>
   )

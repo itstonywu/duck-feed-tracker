@@ -5,6 +5,7 @@ import DashboardShell from "@/components/DashboardShell"
 import EntriesTable from "@/components/EntriesTable"
 import { EntryWithLocation } from "@/lib/db"
 import EntriesTableSkeleton from "@/components/EntriesTableSkeleton"
+import EntriesTableHeading from "@/components/EntriesTableHeading"
 
 const Entries: NextPage = () => {
   const { data } = useSWR<(EntryWithLocation & { createdAt: string })[]>(
@@ -15,6 +16,7 @@ const Entries: NextPage = () => {
   if (!data) {
     return (
       <DashboardShell>
+        <EntriesTableHeading />
         <EntriesTableSkeleton />
       </DashboardShell>
     )
@@ -22,6 +24,7 @@ const Entries: NextPage = () => {
 
   return (
     <DashboardShell>
+      <EntriesTableHeading />
       <EntriesTable entries={data} />
     </DashboardShell>
   )
