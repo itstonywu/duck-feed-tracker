@@ -42,7 +42,6 @@ const AddLocationModal: React.FunctionComponent<ReactNode> = ({ children }) => {
       createAt: new Date().toISOString(),
       name,
     }
-
     // update the local data immediately, but disable the revalidation
     mutate("/api/user", [newLocation, ...data], false)
 
@@ -51,6 +50,7 @@ const AddLocationModal: React.FunctionComponent<ReactNode> = ({ children }) => {
 
     // trigger a revalidation (refetch) to make sure our local data is correct
     mutate("/api/locations")
+
     toast({
       title: "Sucess!",
       description: "We've added a new location.",
