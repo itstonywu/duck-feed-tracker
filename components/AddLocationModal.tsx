@@ -39,7 +39,7 @@ const AddLocationModal: React.FunctionComponent<ReactNode> = ({ children }) => {
   const onSubmit: SubmitHandler<IFormInput> = async ({ name }) => {
     const newLocation = {
       id: "new",
-      createAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
       name,
     }
     // update the local data immediately, but disable the revalidation
@@ -65,7 +65,7 @@ const AddLocationModal: React.FunctionComponent<ReactNode> = ({ children }) => {
   return (
     <>
       <Button onClick={onOpen} colorScheme="blue">
-        Open Modal
+        Add Location +
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
