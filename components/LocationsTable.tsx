@@ -14,7 +14,7 @@ const LocationsTable: React.FunctionComponent<Props> = ({ locations }) => {
         <Tr borderTopLeftRadius={8} borderTopRightRadius={8}>
           <Th>Name</Th>
           <Th>View Entries</Th>
-          <Th>Number of Entries</Th>
+          <Th>Date Created</Th>
         </Tr>
       </Thead>
       <Tbody>
