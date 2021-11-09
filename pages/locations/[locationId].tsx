@@ -13,25 +13,20 @@ import {
 import { Location } from "@prisma/client"
 import { ParsedUrlQuery } from "querystring"
 import { serialize, deserialize } from "superjson"
-import { format } from "date-fns"
+import DashboardShell from "@/components/DashboardShell"
+import LocationEntriesTable from "@/components/LocationEntriesTable"
+import LocationEntriesTableHeading from "@/components/LocationEntriesTableHeading"
 
 const LocationEntries = ({
   locationAndEntries,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [locationData, setLocationData] = useState<LocationWithEntries>(
-    deserialize(locationAndEntries)
-  )
+  const locationData: LocationWithEntries = deserialize(locationAndEntries)
 
   return (
-    <ul>
-      {locationData?.entries.map((entry) => (
-        <li key={entry.id}>
-          {`Created at: ${format(entry.createdAt, "PPpp")}, Type: ${
-            entry.type
-          }`}
-        </li>
-      ))}
-    </ul>
+    <DashboardShell>
+      <LocationEntriesTableHeading location={locationData!.name} />
+      <LocationEntriesTable entries={locationData!.entries} />
+    </DashboardShell>
   )
 }
 
