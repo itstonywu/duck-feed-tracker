@@ -1,7 +1,8 @@
 import type { NextPage } from "next"
 import useSWR from "swr"
+
+import { Location } from "@/lib/db"
 import fetcher from "@/utils/fetcher"
-import { Location } from "@prisma/client"
 import DashboardShell from "@/components/DashboardShell"
 import LocationTableSkeleton from "@/components/LocationTableSkeleton"
 import LocationsTable from "@/components/LocationsTable"

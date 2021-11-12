@@ -1,6 +1,6 @@
 const fetcher = async (url: string) => {
   const res = await fetch(url)
-  return res.json()
+  return await res.json()
 }
 
 export default fetcher

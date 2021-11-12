@@ -1,5 +1,6 @@
-import { Flex, Link, Box } from "@chakra-ui/layout"
+import React from "react"
 import NextLink from "next/link"
+import { Flex, Link, Box } from "@chakra-ui/layout"
 
 const Nav: React.FunctionComponent = () => {
   return (

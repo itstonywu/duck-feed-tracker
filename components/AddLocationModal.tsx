@@ -1,6 +1,6 @@
-import React, { ReactNode } from "react"
+import React from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
-import useSWR, { useSWRConfig } from "swr"
+import { useSWRConfig } from "swr"
 import {
   Modal,
   ModalOverlay,
@@ -16,7 +16,6 @@ import {
   useToast,
   useDisclosure,
 } from "@chakra-ui/react"
-import fetcher from "@/utils/fetcher"
 
 interface IFormInput {
   name: string
@@ -29,22 +28,13 @@ const saveLocation = async (name: string) => {
   })
 }
 
-const AddLocationModal: React.FunctionComponent<ReactNode> = ({ children }) => {
+const AddLocationModal: React.FunctionComponent = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const toast = useToast()
-  const { register, resetField, handleSubmit } = useForm<IFormInput>()
+  const { register, reset, handleSubmit } = useForm<IFormInput>()
   const { mutate } = useSWRConfig()
-  const { data } = useSWR("/api/locations", fetcher)
 
   const onSubmit: SubmitHandler<IFormInput> = async ({ name }) => {
-    const newLocation = {
-      id: "new",
-      createdAt: new Date().toISOString(),
-      name,
-    }
-    // update the local data immediately, but disable the revalidation
-    mutate("/api/user", [newLocation, ...data], false)
-
     // send a request to the API to update the source
     await saveLocation(name)
 
@@ -58,7 +48,7 @@ const AddLocationModal: React.FunctionComponent<ReactNode> = ({ children }) => {
       duration: 5000,
       isClosable: true,
     })
-    resetField("name")
+    reset()
     onClose()
   }
 

@@ -1,7 +1,9 @@
-import { Entry } from "@prisma/client"
+import React from "react"
 import { Table, Tr, Th, Td, Thead, Tbody } from "@chakra-ui/react"
 import { format, parseISO } from "date-fns"
+
 import { EntryWithLocation } from "@/lib/db"
+import DeleteEntryButton from "./DeleteEntryButton"
 
 interface Props {
   entries: (EntryWithLocation & { createdAt: string })[]
@@ -17,6 +19,7 @@ const EntriesTable: React.FunctionComponent<Props> = ({ entries }) => {
           <Th>Number of Ducks</Th>
           <Th>Location</Th>
           <Th>Date Added</Th>
+          <Th></Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -28,6 +31,9 @@ const EntriesTable: React.FunctionComponent<Props> = ({ entries }) => {
               <Td>{numberOfDucks}</Td>
               <Td>{location.name}</Td>
               <Td>{format(parseISO(createdAt), "PPpp")}</Td>
+              <Td>
+                <DeleteEntryButton entryId={id} />
+              </Td>
             </Tr>
           )
         )}
