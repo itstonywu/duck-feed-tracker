@@ -1,31 +1,34 @@
 import {
-  getAllLocations,
-  getLocationAndEntries,
-  LocationWithEntries,
-} from "@/lib/db"
-import { useState } from "react"
-import {
   GetStaticPaths,
   GetStaticProps,
   GetStaticPropsContext,
   InferGetStaticPropsType,
 } from "next"
-import { Location } from "@prisma/client"
 import { ParsedUrlQuery } from "querystring"
 import { serialize, deserialize } from "superjson"
 import DashboardShell from "@/components/DashboardShell"
-import LocationEntriesTable from "@/components/LocationEntriesTable"
+import useSWR from "swr"
+
+import { getAllLocations, getLocationById, Location } from "@/lib/db"
 import LocationEntriesTableHeading from "@/components/LocationEntriesTableHeading"
+import LocationEntriesTable from "@/components/LocationEntriesTable"
+import LocationTableSkeleton from "@/components/LocationTableSkeleton"
+import fetcher from "@/utils/fetcher"
 
 const LocationEntries = ({
-  locationAndEntries,
+  locationData,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const locationData: LocationWithEntries = deserialize(locationAndEntries)
+  const location = deserialize<Location>(locationData)
+  const { data } = useSWR(`/api/locations/${location.id}/entries`, fetcher)
 
   return (
     <DashboardShell>
-      <LocationEntriesTableHeading location={locationData!.name} />
-      <LocationEntriesTable entries={locationData!.entries} />
+      <LocationEntriesTableHeading location={location} />
+      {data ? (
+        <LocationEntriesTable entries={data} />
+      ) : (
+        <LocationTableSkeleton />
+      )}
     </DashboardShell>
   )
 }
@@ -40,12 +43,12 @@ export const getStaticProps: GetStaticProps = async (
   context: GetStaticPropsContext
 ) => {
   const { locationId } = context.params as IParams
-  const data = await getLocationAndEntries(locationId)
-  const serializedData = serialize(data)
+  const rawLocationData = await getLocationById(locationId)
+  const locationData = serialize(rawLocationData)
 
   return {
     props: {
-      locationAndEntries: serializedData,
+      locationData: locationData,
     },
     revalidate: 1,
   }

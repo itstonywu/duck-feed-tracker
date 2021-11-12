@@ -1,9 +1,11 @@
+import React from "react"
 import { Table, Tr, Th, Td, Thead, Tbody } from "@chakra-ui/react"
-import { format } from "date-fns"
+import { format, parseISO } from "date-fns"
+
 import { Entry } from "@/lib/db"
 
 interface Props {
-  entries: Entry[]
+  entries: (Entry & { createdAt: string })[]
 }
 
 const LocationEntriesTable: React.FunctionComponent<Props> = ({ entries }) => {
@@ -23,7 +25,7 @@ const LocationEntriesTable: React.FunctionComponent<Props> = ({ entries }) => {
             <Td>{type}</Td>
             <Td>{amount}</Td>
             <Td>{numberOfDucks}</Td>
-            <Td>{format(createdAt, "PPpp")}</Td>
+            <Td>{format(parseISO(createdAt), "PPpp")}</Td>
           </Tr>
         ))}
       </Tbody>
