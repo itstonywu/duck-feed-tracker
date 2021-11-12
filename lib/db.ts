@@ -3,7 +3,6 @@ import prisma from "@/lib/prisma"
 
 export type { Entry }
 export type { Location }
-export type LocationWithEntries = (Location & { entries: Entry[] }) | null
 export type EntryWithLocation = Entry & { location: Location }
 export type ResponseError = { error: string }
 
@@ -19,17 +18,19 @@ export const createLocation = async (name: string): Promise<Location> => {
   return await prisma.location.create({ data: { name } })
 }
 
-export const getLocationAndEntries = async (
-  id: string
-): Promise<LocationWithEntries> => {
+export const getLocationById = async (id: string): Promise<Location | null> => {
   return await prisma.location.findUnique({
     where: { id },
-    include: {
-      entries: {
-        orderBy: {
-          createdAt: "desc",
-        },
-      },
+  })
+}
+
+export const getAllEntriesFromLocation = async (
+  locationId: string
+): Promise<Entry[]> => {
+  return await prisma.entry.findMany({
+    where: { locationId },
+    orderBy: {
+      createdAt: "desc",
     },
   })
 }
