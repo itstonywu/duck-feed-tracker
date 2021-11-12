@@ -18,7 +18,7 @@ const EntriesTable: React.FunctionComponent<Props> = ({ entries }) => {
           <Th>Amount</Th>
           <Th>Number of Ducks</Th>
           <Th>Location</Th>
-          <Th>Date Added</Th>
+          <Th>Time Fed</Th>
           <Th></Th>
         </Tr>
       </Thead>

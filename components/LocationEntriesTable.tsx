@@ -16,7 +16,7 @@ const LocationEntriesTable: React.FunctionComponent<Props> = ({ entries }) => {
           <Th>Type</Th>
           <Th>Amount</Th>
           <Th>Number of Ducks</Th>
-          <Th>Date Added</Th>
+          <Th>Time Fed</Th>
         </Tr>
       </Thead>
       <Tbody>
