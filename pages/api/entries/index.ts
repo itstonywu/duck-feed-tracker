@@ -31,9 +31,31 @@ const handlePOST = async (
   res: NextApiResponse<Entry | ResponseError>
 ) => {
   try {
-    const entry = await createEntry(JSON.parse(req.body))
+    const newEntryJSON = JSON.parse(req.body)
+    const entry = await createEntry(formatRequest(newEntryJSON))
     res.status(200).json(entry)
   } catch (error) {
     res.status(500).json({ error: "Error creating entry" })
+  }
+}
+
+interface JSONEntryRequest {
+  type: string
+  amount: string
+  numberOfDucks: string
+  locationId: string
+}
+
+const formatRequest = ({
+  type,
+  amount,
+  numberOfDucks,
+  locationId,
+}: JSONEntryRequest): Omit<Entry, "id" | "createdAt"> => {
+  return {
+    type,
+    amount: parseInt(amount),
+    numberOfDucks: parseInt(numberOfDucks),
+    locationId,
   }
 }
